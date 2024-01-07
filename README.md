@@ -18,3 +18,8 @@ Organización proyecto
 - Plantear por encima el HTML???
 - Cómo conectar HTML, CSS y JS?
 - Buscar imagenes para ir poniendo en el CSS
+
+⦁  Dudas
+- Cada vez que se recargue la página incial (index.html), el fondo cambia aleatoria (?)
+
+
