@@ -1,7 +1,7 @@
 /* Css de prueba para ver como queda con el Código HTML y tener una idea*/
 body, h1, h2, p, ul, li {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
 }
 
 body {
@@ -101,8 +101,9 @@ body {
         width: 100%;
     }
 
+    /* reduzco el gif lo máximo que puedo y le realizo en display-flex para intentar moverlo a mi antojo, pero no puedo */
     #mundoGif {
-        max-width: 50%;  /* Ajustado para cuando se reduzca la pantalla: móvil, tablet, etc */
-        height: 50%;
+        width: 10%;  /* Ajustado para cuando se reduzca la pantalla: móvil, tablet, etc */
+        display: flex;
     }
 }
