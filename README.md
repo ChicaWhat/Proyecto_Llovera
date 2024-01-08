@@ -12,14 +12,12 @@ Organización proyecto
 - Extra súper opcional: buscar más info aparte para hacer la aplicación más bonita visualmente y añadirle más funcionalidad, creando así, algo que lo haga ÚNICO.
 
 ⦁	Tareas para hacer
-- Buscar sobre Deploy.
 - Informarnos más sobre las APIs del PDF.
 - Cómo se conectan las APIs de las condiciones meteorológicas qué elijamos al HTML?
-- Plantear por encima el HTML???
-- Cómo conectar HTML, CSS y JS?
-- Buscar imagenes para ir poniendo en el CSS
 
-⦁  Dudas
-- Cada vez que se recargue la página incial (index.html), el fondo cambia aleatoria (?)
+⦁  Objetivos extras
+- Cada vez que se recargue la página incial (index.html), el fondo del header (por ejemplo) cambia a otra imagen
+- Dependiendo del tiempo que nos salte en pantalla para las próximas 8h, el fondo de la página cambiará mostrando visualmente la condición meteorológica (por ejemplo, si va a hacer sol en las próximas X horas, que el fondo sea un cielo despejado).
+- Creación de botones con animaciones/diseños con cada condición meteorológica y, al pulsar el botón con el tiempo que quieres que te muestre en pantalla, te salte un aviso de si ocurrirá o no en las próximas X horas.
 
 
