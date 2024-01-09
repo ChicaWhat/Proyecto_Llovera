@@ -23,25 +23,8 @@ button.addEventListener("click", () => {
 
        const url1 = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`; 
 
-       function obtenerDireccion(latitud, longitud) {
-        const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
-        const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
-      
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            if (data.results && data.results.length > 0) {
-              const direccion = data.results[0].formatted;
-              console.log(data.results)
-              console.log('La dirección es:', direccion);
-            } else {
-              console.log('No se pudo obtener la dirección');
-            }
-          })
-          .catch(error => console.error('Hubo un error:', error));
-
-      }
     
+ 
 
       fetch(url1)
         .then((response) => {
@@ -67,10 +50,10 @@ button.addEventListener("click", () => {
           // console.log(lluviaPorHoras)
             if(lluviaPorHoras > 0){
               const direccion = data.results[0].formatted;
-              weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover en ${direccion}`;
+              weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover `;
             }
             else {
-              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover ${direccion}`;
+              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover `;
             }
 
         })
@@ -86,7 +69,7 @@ button.addEventListener("click", () => {
   );
 });
 
-/* function obtenerDireccion(latitud, longitud) {
+function obtenerDireccion(latitud, longitud) {
   const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
 
@@ -103,4 +86,4 @@ button.addEventListener("click", () => {
     })
     .catch(error => console.error('Hubo un error:', error));
 
-} */
+} 
