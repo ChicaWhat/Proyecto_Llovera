@@ -21,14 +21,29 @@ button.addEventListener("click", () => {
       const horaDeLluvia = horaConFecha.getHours();
       
 
-       const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`; 
+       const url1 = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`; 
 
-
+       function obtenerDireccion(latitud, longitud) {
+        const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
       
-/*     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&hourly=temperature_2m&past_hours=${horaActual}&forecast_hours=${horaFinalFormateada}` */
-     
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            if (data.results && data.results.length > 0) {
+              const direccion = data.results[0].formatted;
+              console.log(data.results)
+              console.log('La dirección es:', direccion);
+            } else {
+              console.log('No se pudo obtener la dirección');
+            }
+          })
+          .catch(error => console.error('Hubo un error:', error));
 
-      fetch(url)
+      }
+    
+
+      fetch(url1)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.status}`);
@@ -39,24 +54,23 @@ button.addEventListener("click", () => {
           console.log('Respuesta de la API:', data); // Agrega esta línea para imprimir la respuesta en la consola
           console.log( data.current.time);
           console.log( data.longitude, data.latitude);
-          obtenerDireccion(data.latitude, data.longitude);
+         
+          
           // Ahora, analiza la estructura real de la respuesta y ajusta tu código en consecuencia
           // Por ejemplo, si la lluvia está en data.hourly.rain, ajusta esta línea
           const forecast = data.hourly.rain;
 
-/*           if (forecast.some(hour => hour > 0)) {
-            weatherStatus.textContent = "Sí, va a llover";
-          } else {
-            weatherStatus.textContent = "No, no va a llover";
-          } */
-          
+
+        
+        // Bucle para conseguir si en las próximas 8 horas llueve o no
           for( lluviaPorHoras of forecast )
           // console.log(lluviaPorHoras)
             if(lluviaPorHoras > 0){
-              weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover`;
+              const direccion = data.results[0].formatted;
+              weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover en ${direccion}`;
             }
             else {
-              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover`;
+              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover ${direccion}`;
             }
 
         })
@@ -72,7 +86,7 @@ button.addEventListener("click", () => {
   );
 });
 
-function obtenerDireccion(latitud, longitud) {
+/* function obtenerDireccion(latitud, longitud) {
   const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
 
@@ -88,4 +102,5 @@ function obtenerDireccion(latitud, longitud) {
       }
     })
     .catch(error => console.error('Hubo un error:', error));
-}
+
+} */
