@@ -1,152 +1,72 @@
-"use strict"
+const button = document.getElementById("check-weather");
+const weatherStatus = document.getElementById("weather-status");
 
-document.addEventListener('DOMContentLoaded', () => {
-    const getLocationBtn = document.getElementById('getLocationBtn');
-    const locationInput = document.getElementById('locationInput');
-    const locationResult = document.getElementById('locationResult');
-    const suggestionsContainer = document.getElementById('suggestionsContainer');
+button.addEventListener("click", () => {
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      const latitud = position.coords.latitude;
+     const longitud = position.coords.longitude;
+       // Obtener la hora actual en minutos
+       const horaActual = new Date().toISOString().slice(0, 16);
+      
+       // Calcular la hora final sumando 8 horas
+       const horaFinal = new Date();
+       horaFinal.setHours(horaFinal.getHours() + 8);
+       const horaFinalFormateada = horaFinal.toISOString().slice(0, 16);
 
-    getLocationBtn.addEventListener('click', () => {
-        getLocation()
-            .then(position => {
-                const { latitude, longitude } = position.coords;
-                return reverseGeocode(latitude, longitude);
-            })
-            .then(locationInfo => {
-                locationResult.textContent = `Ciudad: ${locationInfo.city}, País: ${locationInfo.country}`;
-            })
-            .catch(error => {
-                console.error('Error al obtener la ubicación:', error);
-                locationResult.textContent = 'Error al obtener la ubicación.';
-            });
-    });
+       console.log(horaActual);
+       console.log(horaFinalFormateada);
 
-    locationInput.addEventListener('input', () => {
-        const query = locationInput.value.trim();
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`;
 
-        if (query.length >= 3) {
-            // Realizar una solicitud a la API de sugerencias de ciudades (puedes utilizar OpenCage o cualquier otra)
-            getSuggestions(query)
-                .then(suggestions => {
-                    displaySuggestions(suggestions);
-                })
-                .catch(error => {
-                    console.error('Error al obtener sugerencias:', error);
-                });
-        } else {
-            clearSuggestions();
-        }
-    });
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Error en la solicitud: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log('Respuesta de la API:', data); // Agrega esta línea para imprimir la respuesta en la consola
+          console.log( data.current.time);
+          console.log( data.longitude, data.latitude);
+          obtenerDireccion(data.latitude, data.longitude);
+          // Ahora, analiza la estructura real de la respuesta y ajusta tu código en consecuencia
+          // Por ejemplo, si la lluvia está en data.hourly.rain, ajusta esta línea
+          const forecast = data.hourly.rain;
 
-    suggestionsContainer.addEventListener('click', (event) => {
-        if (event.target.tagName === 'LI') {
-            const selectedCity = event.target.textContent;
-            locationInput.value = selectedCity;
-            clearSuggestions();
-        }
-    });
+          if (forecast.some(hour => hour > 0)) {
+            weatherStatus.textContent = "Sí, va a llover";
+          } else {
+            weatherStatus.textContent = "No, no va a llover";
+          }
+        })
+        .catch((error) => {
+          console.error("Error en la solicitud a la API:", error);
+          weatherStatus.textContent = "Error al obtener la predicción meteorológica";
+        });
+    },
+    (error) => {
+      console.error("Error al obtener la ubicación:", error);
+      weatherStatus.textContent = "Error al obtener la ubicación";
+    }
+  );
 });
 
-function getLocation() {
-    return new Promise((resolve, reject) => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        } else {
-            reject(new Error('La geolocalización no está soportada en este navegador.'));
-        }
-    });
-}
+function obtenerDireccion(latitud, longitud) {
+  const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
 
-function reverseGeocode(latitude, longitude) {
-    const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
-    const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=${apiKey}&language=es`;
-
-    return fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.results.length > 0) {
-                const result = data.results[0];
-                const city = result.components.city || result.components.town || result.components.village;
-                const country = result.components.country;
-                return { city, country };
-            } else {
-                throw new Error('No se encontraron resultados de geocodificación para las coordenadas proporcionadas.');
-            }
-        });
-}
-
-function getSuggestions(query) {
-    // Aquí deberías realizar una solicitud a la API de sugerencias de ciudades
-    // Puedes utilizar OpenCage o cualquier otra API de geocodificación que ofrezca autocompletado
-    const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
-    const apiUrl = `https://api.opencagedata.com/geocode/v1/json?q=${query}&key=${apiKey}&limit=5`;
-
-    return fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            const suggestions = data.results.map(result => result.formatted);
-            return suggestions;
-        });
-}
-
-function displaySuggestions(suggestions) {
-    const suggestionsContainer = document.getElementById('suggestionsContainer');
-    suggestionsContainer.innerHTML = '';
-
-    suggestions.forEach(suggestion => {
-        const suggestionItem = document.createElement('li');
-        suggestionItem.textContent = suggestion;
-        suggestionsContainer.appendChild(suggestionItem);
-    });
-
-    suggestionsContainer.style.display = 'block';
-}
-
-function clearSuggestions() {
-    const suggestionsContainer = document.getElementById('suggestionsContainer');
-    suggestionsContainer.innerHTML = '';
-    suggestionsContainer.style.display = 'none';
-}
-//Al inspeccionar la web muestra mas detalles si da error de localización
-getLocationBtn.addEventListener('click', () => {
-    getLocation()
-        .then(position => {
-            const { latitude, longitude } = position.coords;
-            return reverseGeocode(latitude, longitude);
-        })
-        .then(locationInfo => {
-            locationResult.textContent = `Ciudad: ${locationInfo.city}, País: ${locationInfo.country}`;
-        })
-        .catch(error => {
-            console.error('Error al obtener la ubicación:', error.message);
-            locationResult.textContent = 'Error al obtener la ubicación. Verifica la consola para más detalles.';
-        });
-});
-function getWeather(latitude, longitude) {
-    const apiUrl = `https://open-meteo.com/en/docs/#current=apparent_temperature,is_day&hourly=temperature_2m,rain`;
-
-    return fetch(apiUrl)
-        .then(response => response.json())
-        .then(data => {
-            if (data.daily && data.daily.weathercode && data.daily.weathercode.length > 0) {
-                const weatherCode = data.daily.weathercode[0];
-                return getWeatherDescription(weatherCode);
-            } else {
-                throw new Error('No se encontraron datos meteorológicos para las coordenadas proporcionadas.');
-            }
-        });
-}
-
-function getWeatherDescription(weatherCode) {
-    // Puedes implementar tu propia lógica para mapear códigos meteorológicos a descripciones.
-    // Este es un ejemplo básico, pero podrías necesitar un mapeo más detallado según la API que estás utilizando.
-    const weatherDescriptions = {
-        0: 'Despejado',
-        1: 'Parcialmente nublado',
-        2: 'Nublado',
-        // ... Añadir más descripciones según sea necesario
-    };
-
-    const description = weatherDescriptions[weatherCode] || 'Descripción meteorológica no disponible';
-    return description;
+  fetch(url)
+    .then(response => response.json())
+    .then(data => {
+      if (data.results && data.results.length > 0) {
+        const direccion = data.results[0].formatted;
+        console.log(data.results)
+        console.log('La dirección es:', direccion);
+      } else {
+        console.log('No se pudo obtener la dirección');
+      }
+    })
+    .catch(error => console.error('Hubo un error:', error));
 }
