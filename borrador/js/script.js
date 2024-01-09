@@ -21,12 +21,15 @@ button.addEventListener("click", () => {
       const horaDeLluvia = horaConFecha.getHours();
       
 
-       const url1 = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`; 
+      /* 
+      https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m,rain
+      
+      https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`
+      */
 
-    
- 
+      // Se ha cambiado la URL de la api weather y en vez de ser el TimeZone Berlin/Europa, es automatico. La cosa es que ahora no lanza la dirección de la calle, solo la latitud y la longitud
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&minutely_15=temperature_2m,rain&hourly=temperature_2m,rain&daily=weather_code&timezone=auto&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`)
 
-      fetch(url1)
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error en la solicitud: ${response.status}`);
@@ -35,25 +38,21 @@ button.addEventListener("click", () => {
         })
         .then((data) => {
           console.log('Respuesta de la API:', data); // Agrega esta línea para imprimir la respuesta en la consola
-          console.log( data.current.time);
           console.log( data.longitude, data.latitude);
+
          
-          
           // Ahora, analiza la estructura real de la respuesta y ajusta tu código en consecuencia
           // Por ejemplo, si la lluvia está en data.hourly.rain, ajusta esta línea
           const forecast = data.hourly.rain;
 
-
-        
         // Bucle para conseguir si en las próximas 8 horas llueve o no
           for( lluviaPorHoras of forecast )
           // console.log(lluviaPorHoras)
             if(lluviaPorHoras > 0){
-              const direccion = data.results[0].formatted;
               weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover `;
             }
             else {
-              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover `;
+              weatherStatus.textContent = `No, no va a llover `;
             }
 
         })
@@ -69,13 +68,14 @@ button.addEventListener("click", () => {
   );
 });
 
+// No está funcionando esta función
 function obtenerDireccion(latitud, longitud) {
-  const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
+  const apiKey = '494e5582127d4e7794cdd64046a88078'; // Reemplaza con tu clave de OpenCage Geocoding
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
-
-  fetch(url)
+   fetch(url)
     .then(response => response.json())
     .then(data => {
+      console.log(data)
       if (data.results && data.results.length > 0) {
         const direccion = data.results[0].formatted;
         console.log(data.results)
@@ -85,5 +85,5 @@ function obtenerDireccion(latitud, longitud) {
       }
     })
     .catch(error => console.error('Hubo un error:', error));
-
-} 
+}
+obtenerDireccion()
