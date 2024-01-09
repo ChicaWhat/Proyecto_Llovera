@@ -17,7 +17,16 @@ button.addEventListener("click", () => {
        console.log(horaActual);
        console.log(horaFinalFormateada);
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`;
+      const horaConFecha = new Date();
+      const horaDeLluvia = horaConFecha.getHours();
+      
+
+       const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&timezone=Europe%2FBerlin&start_hour=${horaActual}&end_hour=${horaFinalFormateada}`; 
+
+
+      
+/*     const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&hourly=temperature_2m&past_hours=${horaActual}&forecast_hours=${horaFinalFormateada}` */
+     
 
       fetch(url)
         .then((response) => {
@@ -35,11 +44,21 @@ button.addEventListener("click", () => {
           // Por ejemplo, si la lluvia está en data.hourly.rain, ajusta esta línea
           const forecast = data.hourly.rain;
 
-          if (forecast.some(hour => hour > 0)) {
+/*           if (forecast.some(hour => hour > 0)) {
             weatherStatus.textContent = "Sí, va a llover";
           } else {
             weatherStatus.textContent = "No, no va a llover";
-          }
+          } */
+          
+          for( lluviaPorHoras of forecast )
+          // console.log(lluviaPorHoras)
+            if(lluviaPorHoras > 0){
+              weatherStatus.textContent = `Sí, a las ${horaDeLluvia} va a llover`;
+            }
+            else {
+              weatherStatus.textContent = `No, a las ${horaDeLluvia} no va a llover`;
+            }
+
         })
         .catch((error) => {
           console.error("Error en la solicitud a la API:", error);
