@@ -21,3 +21,8 @@ Organización proyecto
 - Creación de botones con animaciones/diseños con cada condición meteorológica y, al pulsar el botón con el tiempo que quieres que te muestre en pantalla, te salte un aviso de si ocurrirá o no en las próximas X horas.
 
 
+⦁  Info de los comentarios de código de JS de la carpeta intentoDeOtroCodigo
+- Enlace 1:
+https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition
+- Enlace 2:
+https://developer.mozilla.org/en-US/docs/Web/API/GeolocationPositionError
