@@ -19,6 +19,15 @@ button.addEventListener("click", () => {
 
       console.log(horaActual);
       console.log(horaFinalFormateada);
+      // MAPA
+      let map = L.map('map').setView([latitud, longitud],20)
+
+      //Agregar tilelAyer mapa base desde openstreetmap
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+            
+
 
       const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&daily=weather_code&timezone=auto&start_hour=${horaMadrid}&end_hour=${horaFinalFormateada}`;
 

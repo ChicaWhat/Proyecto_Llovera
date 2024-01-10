@@ -28,6 +28,8 @@
     width: 100%;
     height: auto;
     opacity: 30%;
+    display: flex;
+
   }
   
   h1 {
@@ -54,22 +56,28 @@
   }
   
   #weather-status {
-    display: flex;
     font-size: 1.5em;
-    position: relative;
+    position: absolute;
     top: 70px; /* Ajusta según sea necesario */
     left: 50%;
     transform: translateX(-50%);
     z-index: 2; /* Ponlo por encima del video */
     color:#0e0d0d; /* Cambia el color según tu diseño */
   }
-  #weather-hours {
-    font-size: 1.5em;
+
+  #map {
+ 
+    height: 30vh;
+    width: 100hw;
+  
+  }
+
+  #weather-hours{
     position: absolute;
-    top: 150px; /* Ajusta según sea necesario */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 2; /* Ponlo por encima del video */
-    color:#0e0d0d; /* Cambia el color según tu diseño */
+    top: 300px;
+    display: flex;
+    justify-content: space-evenly;
+    align-content: space-between;
+    
   }
   
