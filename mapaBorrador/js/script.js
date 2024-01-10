@@ -19,7 +19,7 @@ button.addEventListener("click", () => {
 
       const horaConFecha = new Date();
       const horaDeLluvia = horaConFecha.getHours();
-      let map = L.map('map').setView([latitud, longitud],20)
+      let map = L.map('map').setView([latitud, longitud],17)
 
 //Agregar tilelAyer mapa base desde openstreetmap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
