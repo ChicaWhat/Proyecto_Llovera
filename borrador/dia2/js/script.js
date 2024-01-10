@@ -29,7 +29,8 @@ button.addEventListener("click", () => {
             
 
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,rain&daily=weather_code&timezone=auto&start_hour=${horaMadrid}&end_hour=${horaFinalFormateada}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,precipitation_probability&daily=weather_code&timezone=auto&start_hour=${horaMadrid}&end_hour=${horaFinalFormateada}`;
+      console.log(url);
 
       fetch(url)
         .then((response) => {
@@ -48,8 +49,8 @@ button.addEventListener("click", () => {
           obtenerDireccion(data.latitude, data.longitude)
             .then(direccionObtenida => {
               console.log('La dirección obtenida es:', direccionObtenida);
-              // Por ejemplo, si la lluvia está en data.hourly.rain, ajusta esta línea
-              const forecast = data.hourly.rain;
+        
+              const forecast = data.hourly.precipitation_probability;
               const tiempoPorHoras = data.hourly.time
               console.log(tiempoPorHoras);
               if (forecast.some(hour => hour > 0)) {
@@ -57,28 +58,29 @@ button.addEventListener("click", () => {
               } else {
                 weatherStatus.textContent = `No, no va a llover en ${direccionObtenida}`;
               }
-              for (let i = 0; i < tiempoPorHoras.length; i++) {
-                // Mostrar el índice y el valor del primer array
-                if (forecast[i] > 0) {
-                  console.log(`Sí, a las ${tiempoPorHoras[i]} va a llover `);
-                  const nuevoParrafo = document.createElement('li');
-                  nuevoParrafo.textContent = `A las ${tiempoPorHoras[i]} hay ${forecast[i] * 100} probabilidades de lluvia`;
+              for (let i = 1; i < tiempoPorHoras.length; i++) {
+          
+                if (forecast[i] >= 1) {
+             
+                  let fechaObjeto1 = new Date(tiempoPorHoras[i]);
+                  let horas1 = fechaObjeto1.getHours();
+                  let minutos1 = fechaObjeto1.getMinutes();
+                  let horaFormateada1 = `${horas1 < 10 ? '0' : ''}${horas1}:${minutos1 < 10 ? '0' : ''}${minutos1}`;
+                
 
-                  // Agregar el nuevo elemento <li> al elemento seleccionado
-                  weatherHours.appendChild(nuevoParrafo);
+                  const nuevoParrafo1 = document.createElement('li');
+                  nuevoParrafo1.textContent = `A las ${horaFormateada1} hay ${forecast[i]}% probabilidades de lluvias `;
+                  console.log(`Si,a las ${tiempoPorHoras[i]} no va a llover `);
+                  weatherHours.appendChild(nuevoParrafo1);               
+                  weatherHours.appendChild(nuevoParrafo1);
                 }
-                else {
-                  // Crear un objeto Date con la cadena de fecha proporcionada
+                else {      
                   let fechaObjeto = new Date(tiempoPorHoras[i]);
-
-                  // Obtener las horas y minutos de la fecha
                   let horas = fechaObjeto.getHours();
                   let minutos = fechaObjeto.getMinutes();
-
-                  // Formatear las horas y minutos según tu requisito (agregando ceros a la izquierda si es necesario)
-                  let horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;
+                  let horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;               
                   const nuevoParrafo = document.createElement('li');
-                  nuevoParrafo.textContent = `A las ${horaFormateada} hay ${forecast[i] * 100} probabilidades de lluvias `;
+                  nuevoParrafo.textContent = `A las ${horaFormateada} hay ${forecast[i]}% probabilidades de lluvias `;
                   console.log(`No,a las ${tiempoPorHoras[i]} no va a llover `);
                   weatherHours.appendChild(nuevoParrafo);
 
