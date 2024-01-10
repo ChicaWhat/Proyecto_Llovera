@@ -39,6 +39,7 @@ button.addEventListener("click", () => {
         .then((data) => {
           console.log('Respuesta de la API:', data); // Agrega esta línea para imprimir la respuesta en la consola
           console.log( data.longitude, data.latitude);
+          obtenerDireccion(data.latitude, data.longitude);
 
          
           // Ahora, analiza la estructura real de la respuesta y ajusta tu código en consecuencia
@@ -70,12 +71,12 @@ button.addEventListener("click", () => {
 
 // No está funcionando esta función
 function obtenerDireccion(latitud, longitud) {
-  const apiKey = '494e5582127d4e7794cdd64046a88078'; // Reemplaza con tu clave de OpenCage Geocoding
+  const apiKey = '2707ae018f884fd184f39fa92c15f7fe'; // Reemplaza con tu clave de OpenCage Geocoding
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
-   fetch(url)
+
+  fetch(url)
     .then(response => response.json())
     .then(data => {
-      console.log(data)
       if (data.results && data.results.length > 0) {
         const direccion = data.results[0].formatted;
         console.log(data.results)
@@ -86,4 +87,3 @@ function obtenerDireccion(latitud, longitud) {
     })
     .catch(error => console.error('Hubo un error:', error));
 }
-obtenerDireccion()
