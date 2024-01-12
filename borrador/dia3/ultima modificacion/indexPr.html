@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba sobre el proyecto</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="">
+    <link rel="stylesheet" href="./stylePr.css">
+</head>
+
+<body>
+    <div id="map" style="display: none;"></div>
+    <header id="encabezado">
+        <div class="video-container">
+            <video autoplay muted loop>
+                <source src="./videos/video1.mp4" type="video/mp4">
+                Tu navegador no soporta la etiqueta de video.
+            </video>
+        </div>
+        <img src="./imagenes/gif tierra moviendose.gif"
+            alt="imagen en movimiento del planeta Tierra dando a entender que está girando por el movimiento de las nubes y los continentes creados en forma de diseño "
+            id="mundoGif">
+
+        <h1 id="titulo1">¿Lloverá?</h1>
+
+        <nav id="menu">
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Búsqueda avanzada</a></li>
+                <li><a href="#">Consúltanos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="contenido">
+
+        <section id="seccionBoton">
+            <h2 id="titulo2">Pulsa el botón para descubrirlo</h2>
+            <p id="parrafo1">¡Bienvenido a nuestra primera página web! Con ella descubrirá, al pulsar el siguiente
+                botón, el tiempo meteorológico según tu localización GPS. Además, saldrá un aviso en pantalla de si
+                habrá precipitaciones de lluvia o no en las próximas 8 horas. </p>
+
+            <button id="check-weather" onclick="toggleMap()">Conoce el tiempo y las precipitaciones de tu zona</button>
+            <p id="weather-status"></p>
+            <ul id="weather-hours"></ul>
+
+        </section>
+
+    </main>
+    <footer id="footer">
+
+        <p id="parrafoFooter">Derechos de autor reservados. 2024</p>
+
+    </footer>
+
+ <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""></script>
+    <script src="./js/script.js"></script>
+</body>
+
+</html>
