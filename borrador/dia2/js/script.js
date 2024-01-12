@@ -86,7 +86,7 @@ fetch(url)
       weatherStatus.textContent = "Error al obtener la ubicación";
     }
   );
-});
+},{once:true});
 
 
 function obtenerDireccion(latitud, longitud) {
