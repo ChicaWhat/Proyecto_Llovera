@@ -8,15 +8,6 @@ button.addEventListener("click", () => {
       const latitud = position.coords.latitude;
       const longitud = position.coords.longitude;
 
-      // Obtener la hora actual en minutos (en formato que requiere la API)
-      const horaActual = new Date().toISOString().slice(0, 16);
-      const horaMadrid = horaActual.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
-
-      // Calcular la hora final sumando 8 horas (en formato que requiere la API)
-      const horaFinal = new Date();
-      horaFinal.setHours(horaFinal.getHours() + 8);
-      const horaFinalFormateada = horaFinal.toISOString().slice(0, 16);
-      const horaDeLluvia = horaFinal.getHours();
 
       // MAPA
       let map = L.map('map').setView([latitud, longitud], 20)
@@ -27,7 +18,7 @@ button.addEventListener("click", () => {
       }).addTo(map);
 
       // url API con los parámetros que necesitamos para obtener los datos requeridos
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,precipitation_probability&daily=weather_code&timezone=auto&start_hour=${horaMadrid}&end_hour=${horaFinalFormateada}`;
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=precipitation&hourly=temperature_2m,precipitation_probability,rain&daily=precipitation_hours&timezone=auto&forecast_hours=9`
 
       fetch(url)
         .then((response) => {
