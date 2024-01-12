@@ -11,7 +11,8 @@ button.addEventListener("click", () => {
       const longitud = position.coords.longitude;
 
 
-const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&hourly=temperature_2m,rain&daily=precipitation_hours&timezone=auto&forecast_hours=8`
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=precipitation&hourly=temperature_2m,precipitation_probability,rain&daily=precipitation_hours&timezone=auto&forecast_hours=8`
+
 
 fetch(url)
   .then((response) => {
@@ -29,7 +30,7 @@ fetch(url)
 // Se buscan los datos necesarios para el botón. En este caso la lluvia, las 8 horas y las probabilidades de lluvia x hora.
       // const previsionLluvia = data.hourly.rain;
       const intervalo8H = data.hourly.time;
-      const probabilidadDePrecipitaciones = data.daily.precipitation_hours;
+      const probabilidadDePrecipitaciones = data.hourly.precipitation_probability;
 
       console.log(intervalo8H);
       console.log(probabilidadDePrecipitaciones);
