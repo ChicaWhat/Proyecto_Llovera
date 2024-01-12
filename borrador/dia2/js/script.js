@@ -1,3 +1,5 @@
+'use strict'
+
 const button = document.getElementById("check-weather");
 const weatherStatus = document.getElementById("weather-status");
 const weatherHours = document.getElementById("weather-hours");
@@ -7,91 +9,70 @@ button.addEventListener("click", () => {
     (position) => {
       const latitud = position.coords.latitude;
       const longitud = position.coords.longitude;
-      // Obtener la hora actual en minutos
-      const horaActual = new Date().toISOString().slice(0, 16);
-      const horaMadrid = horaActual.toLocaleString('es-ES', { timeZone: 'Europe/Madrid' });
-      console.log(horaMadrid);
-      // Calcular la hora final sumando 8 horas
-      const horaFinal = new Date();
-      horaFinal.setHours(horaFinal.getHours() + 8);
-      const horaFinalFormateada = horaFinal.toISOString().slice(0, 16);
-      const horaDeLluvia = horaFinal.getHours();
-
-      console.log(horaActual);
-      console.log(horaFinalFormateada);
-      // MAPA
-      let map = L.map('map').setView([latitud, longitud],20)
-
-      //Agregar tilelAyer mapa base desde openstreetmap
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(map);
-            
 
 
-      const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&current=apparent_temperature,is_day&hourly=temperature_2m,precipitation_probability&daily=weather_code&timezone=auto&start_hour=${horaMadrid}&end_hour=${horaFinalFormateada}`;
-      console.log(url);
+const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitud}&longitude=${longitud}&hourly=temperature_2m,rain&daily=precipitation_hours&timezone=auto&forecast_hours=8`
 
-      fetch(url)
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error(`Error en la solicitud: ${response.status}`);
-          }
-          return response.json();
-        })
-        .then((data) => {
-          console.log('Respuesta de la API:', data); // Agrega esta línea para imprimir la respuesta en la consola
-          console.log(data.current.time);
+fetch(url)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`Error en la solicitud: ${response.status}`);
+      }
+      return response.json();
+  })
 
-          // const direccionObtenida = obtenerDireccion(data.latitude, data.longitude);
-          // console.log('La dirección obtenida es:', direccionObtenida);
+  .catch(err => console.error(err))
 
-          obtenerDireccion(data.latitude, data.longitude)
-            .then(direccionObtenida => {
-              console.log('La dirección obtenida es:', direccionObtenida);
+  .then((data) => {
+    console.log('Respuesta de la API:', data);
+
+// Se buscan los datos necesarios para el botón. En este caso la lluvia, las 8 horas y las probabilidades de lluvia x hora.
+      // const previsionLluvia = data.hourly.rain;
+      const intervalo8H = data.hourly.time;
+      const probabilidadDePrecipitaciones = data.daily.precipitation_hours;
+
+      console.log(intervalo8H);
+      console.log(probabilidadDePrecipitaciones);
+
+// Esta parte sigo sin comprenderla y necesito que se explique
+  obtenerDireccion(data.latitude, data.longitude)
+    .then(direccionObtenida => {
+    console.log('La dirección obtenida es:', direccionObtenida);
         
-              const forecast = data.hourly.precipitation_probability;
-              const tiempoPorHoras = data.hourly.time
-              console.log(tiempoPorHoras);
-              if (forecast.some(hour => hour > 0)) {
-                weatherStatus.textContent = `Sí, va a llover en ${direccionObtenida}`;
-              } else {
-                weatherStatus.textContent = `No, no va a llover en ${direccionObtenida}`;
-              }
-              for (let i = 1; i < tiempoPorHoras.length; i++) {
+      if (intervalo8H.some(hour => hour > 0)) {
+      weatherStatus.textContent = `Sí, va a llover en ${direccionObtenida}`;
+      } else {
+       weatherStatus.textContent = `No, no va a llover en ${direccionObtenida}`;
+      }
+
+// Realizo cambios en el bucle y condicional
+        for (let i = 0; i < intervalo8H.length; i++) {
+
+          let fechaYHoraActual = new Date(intervalo8H[i]);
+          let soloHoras = fechaYHoraActual.getHours();
           
-                if (forecast[i] >= 1) {
-             
-                  let fechaObjeto1 = new Date(tiempoPorHoras[i]);
-                  let horas1 = fechaObjeto1.getHours();
-                  let minutos1 = fechaObjeto1.getMinutes();
-                  let horaFormateada1 = `${horas1 < 10 ? '0' : ''}${horas1}:${minutos1 < 10 ? '0' : ''}${minutos1}`;
-                
+        if (probabilidadDePrecipitaciones[i] >= 0 && probabilidadDePrecipitaciones[i] < 50) {
+            
+        const nuevaLista = document.createElement('li');
+        nuevaLista.textContent = `A las ${soloHoras}:00 hay ${probabilidadDePrecipitaciones[i]}% probabilidades de lluvias `;
+        // console.log(`A las ${intervalo8H[i]} no va a llover `);
+        weatherHours.appendChild(nuevaLista);               
+        } else {      
+                  // let fechaObjeto = new Date(intervalo8H[i]);
+                  // let horas = fechaObjeto.getHours();
+                  // let minutos = fechaObjeto.getMinutes();
+                  // let horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;               
+            const nuevaLista1 = document.createElement('li');
+            nuevaLista1.textContent = `A las ${soloHoras}:00 hay ${probabilidadDePrecipitaciones[i]}% probabilidades de lluvias `;
+            console.log(`No,a las ${intervalo8H[i]} no va a llover `);
+            weatherHours.appendChild(nuevaLista1);
+          }
+        }
+      })
 
-                  const nuevoParrafo1 = document.createElement('li');
-                  nuevoParrafo1.textContent = `A las ${horaFormateada1} hay ${forecast[i]}% probabilidades de lluvias `;
-                  console.log(`Si,a las ${tiempoPorHoras[i]} no va a llover `);
-                  weatherHours.appendChild(nuevoParrafo1);               
-                  weatherHours.appendChild(nuevoParrafo1);
-                }
-                else {      
-                  let fechaObjeto = new Date(tiempoPorHoras[i]);
-                  let horas = fechaObjeto.getHours();
-                  let minutos = fechaObjeto.getMinutes();
-                  let horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;               
-                  const nuevoParrafo = document.createElement('li');
-                  nuevoParrafo.textContent = `A las ${horaFormateada} hay ${forecast[i]}% probabilidades de lluvias `;
-                  console.log(`No,a las ${tiempoPorHoras[i]} no va a llover `);
-                  weatherHours.appendChild(nuevoParrafo);
-
-                }
-
-              }
-
-            })
-            .catch(error => {
-              console.error('Error:', error.message);
-            });
+        .catch(error => {
+        console.error('Error:', error.message);
+        });
 
         })
         .catch((error) => {
@@ -106,6 +87,7 @@ button.addEventListener("click", () => {
   );
 });
 
+
 function obtenerDireccion(latitud, longitud) {
   const apiKey = '2707ae018f884fd184f39fa92c15f7fe';
   const url = `https://api.opencagedata.com/geocode/v1/json?q=${latitud}+${longitud}&key=${apiKey}`;
@@ -118,12 +100,10 @@ function obtenerDireccion(latitud, longitud) {
         // console.log('La dirección es:', direccion);
         return direccion;
       } else {
-        console.log('No se pudo obtener la dirección');
         throw new Error('No se pudo obtener la dirección');
       }
     })
     .catch(error => {
       console.error('Hubo un error:', error);
-      throw new Error('Error al obtener la dirección');
     });
 }
