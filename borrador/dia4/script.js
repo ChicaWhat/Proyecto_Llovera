@@ -57,9 +57,9 @@ button.addEventListener("click", () => {
                 let horaFormateada = `${horas < 10 ? '0' : ''}${horas}:${minutos < 10 ? '0' : ''}${minutos}`;
 
                 // Creamos elementos HTML para pintar los datos (hora, imagen, probabilidad)
+                const imagenGif = document.createElement('img');
                 const containerPorHoras = document.createElement('li');
                 const horaVisual = document.createElement('p');
-                const imagenGif = document.createElement('img');
                 const probabilidadVisual = document.createElement('p');
 
                 horaVisual.textContent = `${horaFormateada} `;
@@ -67,7 +67,7 @@ button.addEventListener("click", () => {
 
                 // No Lluvia
                 if (forecast[i] < 1) {
-                  imagenGif.src = "./imagenes/sol.jpeg";                
+                  imagenGif.src = "./day.svg";                
                 }
                 // Lluvia Moderada
                 else if (forecast[i] > 1 && forecast[i] <= 50) {
@@ -78,9 +78,11 @@ button.addEventListener("click", () => {
                   imagenGif.src = "./imagenes/lluvia2.jpeg";
                 }
                 //
+
+                // Ordenamos esto li<img<p<p 
                 weatherHours.appendChild(containerPorHoras);
-                containerPorHoras.appendChild(horaVisual);
                 containerPorHoras.appendChild(imagenGif);
+                containerPorHoras.appendChild(horaVisual);
                 containerPorHoras.appendChild(probabilidadVisual);
                
               }
@@ -129,6 +131,8 @@ function toggleMap() {
   var mapDiv = document.getElementById("map");
   mapDiv.style.display = (mapDiv.style.display === "none") ? "block" : "none";
   // Oculta el texto y el botón después de hacer clic
-  //document.getElementById("seccionBoton").style.display = "none";
+  document.getElementById("check-weather").style.display = "none";
+  document.getElementById("titulo2").style.display = "none";
+  document.getElementById("parrafo1").style.display = "none";
 }
 
