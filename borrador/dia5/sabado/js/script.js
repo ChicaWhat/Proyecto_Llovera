@@ -65,15 +65,15 @@ button.addEventListener("click", () => {
 
                 // No Lluvia
                 if (forecast[i] < 1) {
-                  imagenGif.src = "/img/day.svg";                
+                  imagenGif.src = "./img/day.svg";                
                 }
                 // Lluvia Moderada
                 else if (forecast[i] > 1 && forecast[i] <= 50) {
-                  imagenGif.src = "/img/rainy-1.svg";
+                  imagenGif.src = "./img/rainy-1.svg";
                 }
                 // Lluvia intensa
                 else {
-                  imagenGif.src = "/img/rainy-7.svg";
+                  imagenGif.src = "./img/rainy-7.svg";
                 }
                 //
                 weatherHours.appendChild(containerPorHoras);
