@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  
+}
+@media screen {
+header{
+display: none;
+}
+#map{
+    display: none;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #012840;
+
+}
+
+#seccionBoton{
+    display: none;
+}
+.video-container{
+    display: none;
+}
+
+main{
+    position: relative;
+    width: 400px;
+    height: 555px;
+    background: #f0d5b3;
+    border-radius: 16px;
+    padding: 20px;
+
+}
+
+.searchBox{
+    position: relative;
+    width: 100%;
+    height: 55px;
+    background: #ffc176;
+    display: flex;
+    align-items: center;
+}
+button{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background:  #f0c590;
+    border: 2p solid #BF5B21;
+    outline: none;
+    border-radius: 10px;
+    font-size: 22px;
+    color: #03658C;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 0 48px 0 42px;
+    cursor: pointer;
+   
+}
+.weather-box{
+    text-align: center;
+    margin: 40px 0;
+}
+.weather-box img{
+  
+    width: 60%;
+}
+
+.description{
+    font-size: 2px;
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+}
+.weather-details {
+    display: none;
+ 
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+footer{
+    display:none;
+}
+
+ @media screen and (min-width:800px) {
+body{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+}
+#mundoGif{
+    height: 50px;
+    
+}
+ header{
+    height: auto;
+    
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 20px;
+    background-color: wheat;
+
+ }
+
+#seccionBoton{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    text-align: center;
+ 
+
+}
+main{
+    width: 80%;
+    height: 80%;
+}
+.weather-box img{
+  
+    width: 25%;
+}
+.weather-details{
+    
+    width: 100%;
+    padding: 20px 20px;
+    display: flex;}
+
+#weather-hours {
+    display: grid;
+
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 20px;
+ 
+ 
+ 
+}
+#weather-hours li{
+    list-style: none;
+}
+footer{
+    display: flex;
+    background-color: white;
+    justify-content: flex-end;
+   
+}
+ }  
+@media screen and (min-width:1000px) {
+#map{
+    position: relative;
+    width: 100%;
+    height: 25vh;
+        }
+}
+
+
+
+
+
+
