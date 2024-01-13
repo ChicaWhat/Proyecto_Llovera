@@ -69,7 +69,7 @@ button.addEventListener("click", () => {
 
                 // No Lluvia
                 if (forecast[i] < 1) {
-                  imagenGif.src = "./day.svg";                
+                  imagenGif.src = "./imagenes/day.svg";                
                 }
                 // Lluvia Moderada
                 else if (forecast[i] > 1 && forecast[i] <= 50) {
