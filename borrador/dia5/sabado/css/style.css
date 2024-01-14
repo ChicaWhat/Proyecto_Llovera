@@ -5,39 +5,47 @@
     padding: 0;
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
-  
 }
+
 @media screen {
+
 header{
+
 display: none;
 }
+
 #map{
     display: none;
 }
 
 body{
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
+    min-height: 90vh;
     background: #012840;
-
 }
 
 #seccionBoton{
-    display: none;
+    text-align: center;
+    font-size: 15px;
 }
-.video-container{
-    display: none;
+
+#parrafo1{
+    padding-bottom: 10px;
+
 }
 
 main{
-    position: relative;
+    display: flex;
+    flex-direction: column;
     width: 400px;
-    height: 555px;
+    height: 600px;
     background: #f0d5b3;
     border-radius: 16px;
     padding: 20px;
+    margin: 10px;
 
 }
 
@@ -49,6 +57,7 @@ main{
     display: flex;
     align-items: center;
 }
+
 button{
     position: absolute;
     width: 100%;
@@ -57,10 +66,10 @@ button{
     border: 2p solid #BF5B21;
     outline: none;
     border-radius: 10px;
-    font-size: 22px;
+    font-size: 20px;
     color: #03658C;
     font-weight: 500;
-    text-transform: uppercase;
+    text-transform: capitalize;
     padding: 0 48px 0 42px;
     cursor: pointer;
    
@@ -72,7 +81,9 @@ button{
 .weather-box img{
   
     width: 60%;
+    margin-bottom: 10px;
 }
+
 
 .description{
     font-size: 2px;
@@ -81,19 +92,37 @@ button{
 
 }
 
+#weather-status{
+    display: flex;
+    justify-content: center;
+
+}
+
 }
 .weather-details {
     display: none;
- 
     justify-content: center;
     align-items: center;
     width: 50%;
 }
+
 footer{
-    display:none;
+    background-color: aliceblue;
+    display: flex;
+    justify-content: end;
+    
 }
 
+#parrafoFooter{
+    text-align: center;
+}
+
+
+/* MEDIA QUERY DE PANTALLAS PARA TABLET */
+
+
  @media screen and (min-width:800px) {
+    
 body{
         display: flex;
         flex-direction: column;
@@ -106,7 +135,7 @@ body{
 }
  header{
     height: auto;
-    
+    width: 100vh;
     display:flex;
     justify-content: center;
     align-items: center;
@@ -123,7 +152,6 @@ body{
     align-content: center;
     text-align: center;
  
-
 }
 main{
     width: 80%;
@@ -137,28 +165,35 @@ main{
     
     width: 100%;
     padding: 20px 20px;
-    display: flex;}
+    display: flex;
+}
 
 #weather-hours {
     display: grid;
-
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 20px;
- 
- 
- 
 }
+
 #weather-hours li{
     list-style: none;
 }
+
 footer{
     display: flex;
     background-color: white;
     justify-content: flex-end;
-   
 }
- }  
+
+#parrafoFooter{
+    text-align: center;
+    width: 50vh;
+}
+
+}  
+
+/* MEDIA QUERY DE PANTALLAS GRANDES */
+
 @media screen and (min-width:1000px) {
 #map{
     position: relative;
