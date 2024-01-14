@@ -126,5 +126,8 @@ function obtenerDireccion(latitud, longitud) {
 function toggleMap() {
   var mapDiv = document.getElementById("map");
   mapDiv.style.display = (mapDiv.style.display === "none") ? "block" : "none";
+  document.getElementById("check-weather").style.display = "none";
+  // document.getElementById("titulo2").style.display = "none";
+  // document.getElementById("parrafo1").style.display = "none";
 }
 
